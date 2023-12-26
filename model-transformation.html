@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Model Transformations</title>
+
+        <!-- JointJs Dependencies -->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.0.4/joint.css" />
+
+        <!-- Bootstrap Dependencies -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+        <!-- Local Dependencies -->
+        <link rel="stylesheet" href="css/modelTransformations.css">
+    </head>
+    <body>
+        <div style="margin: 10px;" class="row">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="./index.php">IML</a>
+                    </div>
+
+                    <!-- Dropdown Menus -->
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">File
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <!-- Add menu options here -->
+                                
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Menu 2</span>
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <!-- Add menu options here -->
+                                
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu 3
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <!-- Add menu options here -->
+                                
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div style="margin: 10px;" class="row">
+            <!-- Model transformation control panel -->
+            <div class="col-md-7">
+                <div class="container-fluid">
+
+                    <!-- Metamodel row -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div id="sourceMetamodelPanel" class="panel panel-danger modelBox" style="text-align: center;">
+                                <div class="panel-heading">Source Metamodel</div>
+                                <div class="panel-body">
+                                    <div class="row" style="padding-bottom: 10px;">
+                                        <button type="button" class="btn btn-default btn-model-box" onclick="downloadModelFile('importSourceMetamodelFile')">Load</button>
+                                    </div>
+                                    <div class="row">
+                                        <button type="button" class="btn btn-default btn-model-box">Edit</button>
+                                    </div>
+                                    <input id="importSourceMetamodelFile" style="display: none;" type="file" accept=".iml" onclick="this.value = null" onchange="loadMetamodel(this)" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Arrow MMA to Rules -->
+                        <div class="col-md-3" style="text-align: center;">
+                            <img id="sourceMetamodelToRules" class="curvedArrows" src="Resources/modelTransformation/SourceMMtoRulesFail.svg" />
+                        </div>
+                        <!-- Arrow MMB to Rules -->
+                        <div class="col-md-3" style="text-align: center;">
+                            <img id="targetMetamodelToRules" class="curvedArrows" src="Resources/modelTransformation/TargetMMtoRulesFail.svg" />
+                        </div>
+                        <div class="col-md-3">
+                            <div id="targetMetamodelPanel" class="panel panel-danger modelBox" style="text-align: center;">
+                                <div class="panel-heading">Target Metamodel</div>
+                                <div class="panel-body">
+                                    <div class="row" style="padding-bottom: 10px;">
+                                        <button type="button" class="btn btn-default btn-model-box" onclick="downloadModelFile('importTargetMetamodelFile')">Load</button>
+                                    </div>
+                                    <div class="row">
+                                        <button type="button" class="btn btn-default btn-model-box">Edit</button>
+                                    </div>
+                                    <input id="importTargetMetamodelFile" style="display: none;" type="file" accept=".iml" onclick="this.value = null" onchange="loadMetamodel(this)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tranformation rules row -->
+                    <div class="row no-gutters">
+                        <div class="col-md-3" style="text-align: center;">
+                            <img class="dashedUpArrow" src="Resources/modelTransformation/UpArrowDashed.svg" />
+                        </div>
+                        <div class="col-md-6 container-fluid">
+                            <div id="transformationPanel" class="panel panel-danger">
+                                <div class="panel-heading">Transformation Rules</div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <!-- Rule list -->
+                                        <div class="col-md-9">
+                                            <!-- <div class="panel panel-default"> -->
+                                                <!-- <div class="panel-body"> -->
+                                                    <ul id="rulesList" class="rulesPanel">
+                                                        
+                                                        <!-- Use tag below to add rules -->
+                                                        
+                                                            <!-- <li class="list-group-item" style="padding:1px; font-size: 12px;">
+                                                                “Course” maps to “Section”<span class="badge">X</span>
+                                                            </li>  -->
+                                                       
+                                                    </ul>
+                                                <!-- </div> -->
+                                            <!-- </div> -->
+                                        </div>
+
+                                        <!-- Rule buttons -->
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <button id="mapRuleButton" class="ruleButton btn btn-default btn-model-box" type="button" style="margin-bottom: 5px; padding:0%;" onclick="openMapRules()" disabled>Map</button>
+
+                                                <!-- Mapping Modal -->
+                                                <div id="mapRulesModal" class="modal fade model-sm" style="margin-top:12.5%;" role="dialog">
+                                                    <!-- Modal content-->
+                                                    <div class="col-md-1"></div>
+                                                    <div class="modal-content col-md-5">
+                                                        <div id="modalHeader" class="modal-header">
+                                                            <h2 id="modalHeaderText">Create Mapping Rule</h2>
+                                                        </div>
+                                                        <div id="modalBody" class="modal-body" style="padding: 4.5%;">
+                                                            <div id="namesButtons" class="row" style="margin-bottom: 2.0em;">
+                                                                <button id='classNamesButton' class="btn btn-default" onclick="addClassNames(this)">Classes</button>
+                                                                <button class="btn btn-default" onclick="addRelationNames(this)">Relations</button>
+                                                                <button class="btn btn-default" onclick="addAttributeNames(this)">Attributes</button>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <select id="sourceNames" class="classSelector"></select>
+                                                                </div>
+                                                                <div class="col-md-2" style="padding: 0px;">
+                                                                    <span>maps to</span>
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    <select id="targetNames" class="classSelector"></select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                                            <button class="btn btn-success btn-default pull-right" data-dismiss="modal" onclick="createMappingRule()"><span class="glyphicon glyphicon-ok"></span> Confirm</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <button id="convertRuleButton" class="ruleButton btn btn-default btn-model-box" type="button" style="padding:0%;" onclick="openConvertRules()" disabled>Convert</button>
+                                                
+                                                <!-- Convert Modal -->
+                                                <div id="convertRulesModal" class="modal fade model-sm" style="margin-top:12.5%;" role="dialog">
+                                                    <!-- Modal content-->
+                                                    <div class="col-md-1"></div>
+                                                    <div class="modal-content col-md-5">
+                                                        <div id="modalHeader" class="modal-header">
+                                                            <h2 id="modalHeaderText">Create Conversion Rule</h2>
+                                                        </div>
+                                                        <div id="modalBody" class="modal-body" style="padding-top: 7.5%; padding-bottom: 7.5%;">
+                                                            <div class="row" style="margin-bottom: 5%">
+                                                                <div class="col-md-3">
+                                                                    If
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <select id="attributeDropdown" class="convertSelector"></select>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <select id="targetClasses" class="convertSelector"></select>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <input id="targetClasses" class="convertSelector"></input>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    Then
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <select id="attributeDropdown" class="convertSelector"></select>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    Is
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <input id="targetClasses" class="convertSelector"></input>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                                            <button class="btn btn-success btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Confirm</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="text-align: center;">
+                            <img class="dashedUpArrow" src="Resources/modelTransformation/UpArrowDashed.svg" />
+                        </div>
+                    </div>
+
+                    <!-- Instance model row -->
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div id="instanceModelPanel" class="panel panel-danger modelBox" style="text-align: center;">
+                                <div class="panel-heading">Input Model(s)</div>
+                                <div class="panel-body">
+                                    <div class="row" style="padding-bottom: 10px;">
+                                        <button id="instanceModelLoadButton" type="button" class="btn btn-default btn-model-box" onclick="downloadModelFile('importInstanceModelFiles')" disabled>Load</button>
+                                    </div>
+                                    <div class="row">
+                                        <button id="instanceModelEditButton" type="button" class="btn btn-default btn-model-box" disabled>Edit</button>
+                                    </div>
+                                    <input id="importInstanceModelFiles" style="display: none;" type="file" accept=".iml" onclick="this.value = null" onchange="loadInstanceModels(this)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top: 54px;">
+                                    <img id="instanceModelArrowBeforeButton" class="rightArrow" src="Resources/modelTransformation/RightArrowFail.svg" />
+                                </div>
+                                <div class="col-md-6" style="padding-top: 50px;">
+                                    <img id="downArrow" src="Resources/modelTransformation/DownArrowFail.svg" />
+                                    <button id="transformButton" type="button" class="btn btnFailure" style="width:100%;" disabled>Transform</button>
+                                </div>
+                                <div class="col-md-3" style="padding-top: 54px;">
+                                    <img id="instanceModelArrowAfterButton" class="rightArrow" src="Resources/modelTransformation/RightArrowFail.svg" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="panel panel-danger modelBox" style="text-align: center;">
+                                <div class="panel-heading">Output Model(s)</div>
+                                <div class="panel-body">
+                                    <div class="row" style="padding: 22px 0px;">
+                                        <button type="button" class="btn btn-default btn-model-box" disabled>Export</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metamodel displays -->
+            <div class="col-md-5">
+                <!-- Soruce metamodel display -->
+                <div class="row">
+                    <div id="sourceMetamodelDisplayPanel" class="panel panel-danger">
+                        <div class="panel-heading" style="text-align: center;">Source Metamodel</div>
+                        <div class="panel-body" style="height:250px;">
+                            <div id="sourceMetamodelDisplay" class="metamodelDisplay"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Target metamodel display -->
+                <div class="row">
+                    <div id="targetMetamodelDisplayPanel" class="panel panel-danger" style="text-align: center;">
+                        <div class="panel-heading">Target Metamodel</div>
+                        <div class="panel-body" style="height:250px;">
+                            <div id="targetMetamodelDisplay" class="metamodelDisplay"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JointJs Dependencies -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script> <!-- Bootstrap 3 Depends on this version of JQuery as well. -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.14/lodash.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.0.4/joint.js"></script>
+
+        <!-- Bootstrap 3 JavaScript Dependencies -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+        <!-- Custom JavaScript -->
+
+            <!-- Classes -->
+            <script type="text/javascript" src="classes/ImlAttribute.js"></script>
+            <script type="text/javascript" src="classes/ImlClass.js"></script>
+            <script type="text/javascript" src="classes/ImlStructuralModel.js"></script>
+			<script type="text/javascript" src="classes/ImlAction.js"></script>
+            <script type="text/javascript" src="classes/Enumerations/ImlRelationType.js"></script>
+            <script type="text/javascript" src="classes/Enumerations/ImlType.js"></script>
+            <script type="text/javascript" src="classes/Enumerations/ImlVisibilityType.js"></script>
+			<script type="text/javascript" src="classes/Enumerations/ImlActionType.js"></script>
+			<script type="text/javascript" src="classes/Enumerations/ImlActionTargetType.js"></script>
+            <!-- Relation must be defined first before it can be inherited -->
+            <script type="text/javascript" src="classes/Relations/ImlRelation.js"></script>
+            <script type="text/javascript" src="classes/Relations/ImlInheritance.js"></script>
+            <script type="text/javascript" src="classes/Relations/ImlBoundedRelation.js"></script>
+                <script type="text/javascript" src="classes/Relations/ImlReference.js"></script>
+                <script type="text/javascript" src="classes/Relations/ImlComposition.js"></script>
+            <script type ="text/javascript" src="classes/Rules/TransformationRule.js"></script>
+                <script type="text/javascript" src="classes/Rules/MappingRule.js"></script>
+            
+            <!-- Main -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+			<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+			<script type="text/javascript" src="scripts/validation.js"></script>
+            <script type="text/javascript" src="scripts/CustomElements.js"></script>
+            <script type="text/javascript" src="scripts/ClassElementHelpers.js"></script>
+            <script type="text/javascript" src="scripts/import.js"></script>
+            <script type="text/javascript" src="scripts/routes.js"></script>
+			<script type="text/javascript" src="scripts/modelTransformations.js"></script>
+			<script type="text/javascript" src="scripts/paperFunctions.js"></script>
+
+        <!--  -->
+    </body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      body {
+        font-size: 1em;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <button type="button" id="compile">Compile Code</button>
+    <button type="button" id="run">Run Code</button>
+    <br />
+    <textarea id="code" name="code" rows="13" cols="80">
+
+      class HelloWorld { 
+        public static void main(String[] args) { 
+          System.out.println("Hello, World!"); 
+        }
+      }
+
+    </textarea>
+
+    <div id="output"></div>
+
+    <script>
+      $(document).ready(function () {
+        $('#compile').click(function (e) {
+          $('#output').html(' ');
+          var code = $('textarea#code').val();
+          console.log(code);
+          var settings = {
+            url: 'http://iml.cec.miamioh.edu/scripts/saveCode.php/file',
+            method: 'POST',
+            timeout: 0,
+            headers: {
+              'Content-Type': 'application/json',
+              Cookie: 'PHPSESSID=ltm5bb0tjgdv8n4sgjvv7p9a4c',
+            },
+            data: JSON.stringify({
+              uid: 'gerardnt',
+              path: '',
+              class: 'HelloWorld',
+              code: code,
+            }),
+          };
+
+          $.ajax(settings).done(function (response) {
+            console.log(response);
+          });
+
+          var settings = {
+            url: 'http://iml.cec.miamioh.edu/scripts/runJava.php/compile',
+            method: 'POST',
+            timeout: 0,
+            headers: {
+              'Content-Type': 'text/plain',
+              Cookie: 'PHPSESSID=bfkn9hli6h0mlmkkauenukl2ah',
+            },
+            data: '{\r\n"uid":"gerardnt",\r\n"path":""\r\n \r\n}',
+          };
+
+          $.ajax(settings).done(function (response) {
+            let jsondata = JSON.parse(response).msg;
+            console.log(JSON.parse(response));
+            console.log(jsondata);
+            $('#output').html('<pre>' + jsondata + '<pre>');
+          });
+        });
+
+        $('#run').click(function (e) {
+          $('#output').html(' ');
+          var code = $('textarea#code').val();
+          console.log(code);
+          var settings = {
+            url: 'http://iml.cec.miamioh.edu/scripts/saveCode.php/file',
+            method: 'POST',
+            timeout: 0,
+            headers: {
+              'Content-Type': 'application/json',
+              Cookie: 'PHPSESSID=ltm5bb0tjgdv8n4sgjvv7p9a4c',
+            },
+            data: JSON.stringify({
+              uid: 'gerardnt',
+              path: '',
+              class: 'HelloWorld',
+              code: code,
+            }),
+          };
+
+          $.ajax(settings).done(function (response) {
+            console.log(response);
+          });
+
+          var settings = {
+            url: 'http://iml.cec.miamioh.edu/scripts/runJava.php/run',
+            method: 'POST',
+            timeout: 0,
+            headers: {
+              'Content-Type': 'text/plain',
+              Cookie: 'PHPSESSID=bfkn9hli6h0mlmkkauenukl2ah',
+            },
+            data:
+              '{\r\n"uid":"gerardnt",\r\n"path":"",\r\n"mainFile":"HelloWorld"\r\n \r\n}',
+          };
+
+          $.ajax(settings).done(function (response) {
+            let jsondata = JSON.parse(response).msg;
+            console.log(JSON.parse(response));
+            console.log(jsondata);
+            $('#output').html('<pre>' + jsondata + '<pre>');
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Code IDE</title>
+
+        <!-- Bootstrap Dependencies -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+        <!-- Local Dependencies -->
+        <link rel="stylesheet" href="css/stylesheet.css">
+        <link rel="stylesheet" href="css/codeIDE.css">
+
+        <!-- JointJs Dependencies -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script> <!-- Bootstrap 3 Depends on this version of JQuery as well. -->
+
+        <!-- Bootstrap 3 JavaScript Dependencies -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript" ></script>
+        
+
+    </head>
+    <body>
+
+        <div style="margin: 10px; height: 99%;" class="row"> <!-- This contains the entire page and adds a margin around everything -->
+            <div id="leftCol" class="col-lg-8">
+                <!-- Navbar element holding dropdown menus -->
+                <nav class="navbar navbar-default" style="width: 100%;">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="./index.php">Home</a>
+                        </div>
+                        <!-- Dropdown Menus -->
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">File
+                                <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <!-- Add menu options here -->
+                                    <li><a id="new"  href="#">New Project</a></li>
+                                    <li><a id="open" href="#">Open Project</a></li>
+                                    <li><a id="save" href="#">Save Project</a></li>
+                                    <li><a id="saveas" href="#">Save Project As</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Edit
+                                <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <!-- Add menu options here -->
+                                    <li><a id="undo"  href="#">Undo</a></li>
+                                    <li><a id="redo" href="#">Redo</a></li>
+                                    <li><a id="cut" href="#">Cut</a></li>
+                                    <li><a id="copy" href="#">Copy</a></li>
+                                    <li><a id="paste" href="#">Paste</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">View
+                                <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <!-- Add menu options here -->
+                                    <li><a id="zoomin"  href="#">Zoom In</a></li>
+                                    <li><a id="zoomout" href="#">Zoom Out</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Run
+                                <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <!-- Add menu options here -->
+                                    <li><a id="build"  href="#">Build</a></li>
+                                    <li><a id="run" href="#">Run</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Help
+                                <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <!-- Add menu options here -->
+                                    <li><a id="aboutuml"  href="#">About IML</a></li>
+                                    <li><a id="documentation" href="#">Documentation</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <div id="codeSection" class="container-fluid">
+                    <div id="editor">public class HelloWorld {
+    public static void main(String[] args) {
+	
+        // Creates a reader instance which takes
+        // input from standard input - keyboard
+        Scanner reader = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+    
+        // nextInt() reads the next integer from the keyboard
+        int number = reader.nextInt();
+		
+        // println() prints the following line to the output screen
+        System.out.println("You entered: " + number);
+    }
+}</div>
+					<div id="console">
+						<textarea name="console" id="console" class="form"></textarea>
+					</div>
+                </div>
+            </div>
+
+            <div id="rightCol" class="col-lg-4 container-fluid">
+                <!-- Directory and projects -->
+                <div class="row" style="height:100%">
+                    <div style="height:100%;" class="panel panel-default">
+                        <div class="panel-heading text-center" id="projects">Projects</div>
+                        <!-- <form id="fileDir"> -->
+                            <select name="files" id="files" multiple>
+                              <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+							  <option class="fileOptions" value="firstmodel">First Model</option>
+                              <option class="fileOptions" value="testmodel">Test Model</option>
+                              <option class="fileOptions" value="funmodel">Fun Model</option>
+                              <option class="fileOptions" value="badmodel">Bad Model</option>
+                            </select>
+                          <!-- </form> -->
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+<div hidden id="d"></div>
+    <script src="scripts/codeIDE.js"></script>
+    </body>
+</html>
